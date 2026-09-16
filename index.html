@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Badru Tamam — Portofolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E8ECEE;
+    --paper-alt:#F4F6F7;
+    --ink:#14202B;
+    --ink-soft:#4C5A66;
+    --line: rgba(20,32,43,0.16);
+    --line-strong: rgba(20,32,43,0.32);
+    --amber:#B9762A;
+    --amber-soft: rgba(185,118,42,0.12);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--amber-soft); color:var(--ink); }
+ 
+  .grid-bg{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity:0.35;
+    mask-image: linear-gradient(to bottom, transparent, black 6%, black 94%, transparent);
+  }
+ 
+  .frame{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+ 
+  /* corner ticks, like a technical drawing */
+  .ticked{ position:relative; }
+  .ticked::before, .ticked::after,
+  .ticked .tick-br, .ticked .tick-bl{
+    content:""; position:absolute; width:14px; height:14px;
+    border-color:var(--line-strong); border-style:solid; border-width:0;
+  }
+  .ticked::before{ top:-1px; left:-1px; border-top-width:1.5px; border-left-width:1.5px; }
+  .ticked::after{ top:-1px; right:-1px; border-top-width:1.5px; border-right-width:1.5px; }
+  .ticked .tick-bl{ bottom:-1px; left:-1px; border-bottom-width:1.5px; border-left-width:1.5px; }
+  .ticked .tick-br{ bottom:-1px; right:-1px; border-bottom-width:1.5px; border-right-width:1.5px; }
+ 
+  header{
+    border-bottom:1px solid var(--line);
+    padding:18px 0;
+    position:sticky; top:0; z-index:10;
+    background:rgba(232,236,238,0.88);
+    backdrop-filter: blur(6px);
+  }
+  header .frame{ display:flex; justify-content:space-between; align-items:center; }
+  .mark{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.02em;
+    color:var(--ink);
+    text-decoration:none;
+  }
+  nav{ display:flex; gap:28px; }
+  nav a{
+    font-size:14px; color:var(--ink-soft); text-decoration:none;
+    padding-bottom:2px; border-bottom:1px solid transparent;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  nav a:hover, nav a.active{ color:var(--ink); border-color:var(--amber); }
+ 
+  /* HERO */
+  .hero{ padding:110px 0 90px; }
+  .hero .kicker{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px; color:var(--amber);
+    margin-bottom:22px;
+  }
+  .hero-grid{ display:grid; grid-template-columns: 1.5fr 1fr; gap:48px; align-items:end; }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(42px, 6vw, 68px);
+    line-height:1.05;
+    letter-spacing:-0.01em;
+  }
+  .hero p.lede{
+    margin-top:22px; max-width:52ch;
+    font-size:18px; color:var(--ink-soft);
+  }
+  .title-block{
+    border:1px solid var(--line-strong);
+    padding:18px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .title-block dl{ display:grid; grid-template-columns: auto 1fr; gap:8px 14px; }
+  .title-block dt{ color:var(--ink-soft); }
+  .title-block dd{ color:var(--ink); }
+ 
+  .hero-anim{ opacity:0; transform:translateY(10px); animation: rise .7s ease forwards; }
+  .hero-anim.d1{ animation-delay:.05s; }
+  .hero-anim.d2{ animation-delay:.18s; }
+  .hero-anim.d3{ animation-delay:.30s; }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+  @media (prefers-reduced-motion: reduce){
+    .hero-anim{ animation:none; opacity:1; transform:none; }
+  }
+ 
+  section{ padding:64px 0; border-top:1px solid var(--line); }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom:36px;
+  }
+  .section-head .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px; color:var(--ink-soft);
+  }
+  h2{
+    font-family:'Fraunces', serif; font-weight:500;
+    font-size:28px;
+  }
+ 
+  /* ABOUT */
+  .about-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:48px; }
+  .about-grid p{ color:var(--ink-soft); font-size:16px; margin-bottom:14px; max-width:48ch; }
+  .about-grid p strong{ color:var(--ink); font-weight:500; }
+ 
+  /* SKILLS */
+  .skill-group{ margin-bottom:28px; }
+  .skill-group h3{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px; color:var(--ink-soft);
+    margin-bottom:12px;
+  }
+  .chips{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    padding:6px 12px;
+    border:1px solid var(--line-strong);
+    color:var(--ink);
+    background:var(--paper-alt);
+  }
+  .chip.learning{ border-style:dashed; color:var(--ink-soft); }
+ 
+  /* PROJECTS */
+  .projects{ display:grid; gap:1px; background:var(--line-strong); border:1px solid var(--line-strong); }
+  .project{
+    background:var(--paper-alt);
+    padding:28px;
+    position:relative;
+    display:grid; grid-template-columns: 120px 1fr; gap:24px;
+  }
+  .project .idx{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px; color:var(--amber);
+  }
+  .project h3{ font-family:'Fraunces', serif; font-weight:500; font-size:20px; margin-bottom:8px; }
+  .project p{ color:var(--ink-soft); font-size:15px; max-width:56ch; }
+  .project .tags{ margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
+  .project .tags span{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    color:var(--ink-soft);
+  }
+  .project .tags span::after{ content:"·"; margin-left:8px; color:var(--line-strong); }
+  .project .tags span:last-child::after{ content:""; }
+  .project a.link{
+    display:inline-block; margin-top:14px;
+    font-size:13.5px; color:var(--ink); text-decoration:none;
+    border-bottom:1px solid var(--amber);
+  }
+ 
+  @media (max-width: 720px){
+    .hero-grid, .about-grid{ grid-template-columns:1fr; }
+    .project{ grid-template-columns:1fr; }
+  }
+ 
+  /* EDUCATION */
+  .timeline{ position:relative; padding-left:28px; border-left:1px solid var(--line-strong); }
+  .tl-item{ position:relative; padding-bottom:32px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:""; position:absolute; left:-33px; top:4px;
+    width:9px; height:9px; background:var(--paper); border:1.5px solid var(--amber);
+  }
+  .tl-item .period{ font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-soft); margin-bottom:4px; }
+  .tl-item h3{ font-family:'Fraunces', serif; font-weight:500; font-size:19px; margin-bottom:4px; }
+  .tl-item p{ color:var(--ink-soft); font-size:15px; }
+ 
+  /* CONTACT / FOOTER */
+  footer{ padding:64px 0 48px; }
+  .contact-grid{ display:grid; grid-template-columns: 1.3fr 1fr; gap:48px; align-items:start; }
+  footer h2{ margin-bottom:14px; }
+  footer p{ color:var(--ink-soft); max-width:44ch; margin-bottom:22px; }
+  .contact-list{ list-style:none; font-family:'IBM Plex Mono', monospace; font-size:14px; }
+  .contact-list li{ margin-bottom:10px; }
+  .contact-list a{ color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line-strong); }
+  .contact-list a:hover{ border-color:var(--amber); }
+  .fineprint{ margin-top:56px; padding-top:20px; border-top:1px solid var(--line); font-size:12.5px; color:var(--ink-soft); display:flex; justify-content:space-between; }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+ 
+<header>
+  <div class="frame">
+    <a class="mark" href="#top">BT / 001</a>
+    <nav>
+      <a href="#about">Tentang</a>
+      <a href="#skills">Kemampuan</a>
+      <a href="#education">Pendidikan</a>
+      <a href="#contact">Kontak</a>
+    </nav>
+  </div>
+</header>
+ 
+<main id="top">
+  <div class="hero frame">
+    <div class="hero-grid">
+      <div>
+        <div class="kicker hero-anim d1">Informatika · Aspiring AI Engineer</div>
+        <h1 class="hero-anim d2">Badru<br>Tamam</h1>
+        <p class="lede hero-anim d3">Mahasiswa Informatika yang sedang membangun fondasi menuju karier sebagai AI Engineer — belajar dari nol, mendokumentasikan progres, dan mengarahkan langkah ke jalur profesional di Jerman.</p>
+      </div>
+      <div class="title-block ticked hero-anim d3">
+        <span class="tick-bl"></span><span class="tick-br"></span>
+        <dl>
+          <dt>Lokasi</dt><dd>Bandung, Indonesia</dd>
+          <dt>Institusi</dt><dd>UIN Sunan Gunung Djati</dd>
+          <dt>Fokus</dt><dd>[isi: mis. ML fundamentals]</dd>
+          <dt>Target</dt><dd>Ausbildung / Blue Card, DE</dd>
+          <dt>Status</dt><dd>Terbuka untuk magang</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+ 
+  <section id="about">
+    <div class="frame">
+      <div class="section-head">
+        <h2>Tentang</h2>
+        <span class="num">01</span>
+      </div>
+      <div class="about-grid">
+        <p>Saya Badru Tamam, mahasiswa Informatika di UIN Sunan Gunung Djati Bandung. Saat ini saya sedang membangun kemampuan pemrograman dari nol, dengan tujuan menjadi AI Engineer. Saya masih mengeksplorasi bidang AI mana yang paling cocok dengan minat saya, sambil menyiapkan bekal bahasa dan kemampuan teknis untuk mengejar peluang kerja di Jerman setelah lulus kuliah nanti. Saya terbuka untuk kesempatan magang atau kolaborasi kecil di mana saya bisa terus belajar sambil menerapkan apa yang sudah saya pelajari.</p>
+      </div>
+    </div>
+  </section>
+ 
+  <section id="skills">
+    <div class="frame">
+      <div class="section-head">
+        <h2>Kemampuan</h2>
+        <span class="num">02</span>
+      </div>
+ 
+      <div class="skill-group">
+        <h3>Sedang dipelajari</h3>
+        <div class="chips">
+          <span class="chip learning">Python</span>
+          <span class="chip learning">Dasar Struktur Data</span>
+          <span class="chip learning">Git &amp; GitHub</span>
+        </div>
+      </div>
+ 
+      <div class="skill-group">
+        <h3>Tools</h3>
+        <div class="chips">
+          <span class="chip">VS Code</span>
+          <span class="chip">GitHub</span>
+        </div>
+      </div>
+ 
+      <div class="skill-group">
+        <h3>Bahasa</h3>
+        <div class="chips">
+          <span class="chip">Bahasa Indonesia — native</span>
+          <span class="chip">Inggris — B 1</span>
+          <span class="chip learning">Jerman — A 1</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="frame">
+      <div class="section-head">
+        <h2>Pendidikan</h2>
+        <span class="num">04</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="period">2024 — Sekarang</div>
+          <h3>S1 Informatika, UIN Sunan Gunung Djati Bandung</h3>
+          <p>[Boleh tambahkan fokus studi, organisasi, atau pencapaian akademik.]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+ 
+<footer id="contact">
+  <div class="frame">
+    <div class="contact-grid">
+      <div>
+        <h2>Kontak</h2>
+        <p>Terbuka untuk diskusi, magang, atau kolaborasi proyek kecil.</p>
+        <ul class="contact-list">
+          <li>Email — <a href="mailto:namakamu@email.com">mohammedbadrutamam@email.com</a></li>
+          <li>GitHub — <a href="#">github.com/mohammedbadrutamam</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fineprint">
+      <span>Bandung, Indonesia</span>
+      <span>Diperbarui Sep 2026</span>
+    </div>
+  </div>
+</footer>
+ 
+<script>
+  const links = document.querySelectorAll('nav a');
+  const sections = document.querySelectorAll('main section, main .hero');
+  const map = { about:'about', skills:'skills', projects:'projects', education:'education' };
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const match = document.querySelector(`nav a[href="#${e.target.id}"]`);
+        if(match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s=> s.id && io.observe(s));
+</script>
+</body>
+</html>
+ 
